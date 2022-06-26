@@ -33,25 +33,24 @@ class Product(ModelEntity):
         self.review_total = None
         self.review_downloaded = None
         self.review_avg = None
+        # for name in ['title', 'product_group', 'salesrank', 'review_total', 'review_downloaded', 'review_avg']:
+        #     setattr(self, name, None)
 
     def to_tuple(self):
-        return (
-            self.product_id,
-            self.asin,
-            self.title,
-            self.product_group,
-            self.salesrank,
-            self.review_total,
-            self.review_downloaded,
-            self.review_avg
-        )
+        values = []
+        for attr in self.attr_list():
+            values.append(getattr(self, attr))
+        return tuple(values)
 
     @staticmethod
     def attr_list():
-        return list(Product(0, "").__dict__)[:]
+        return list(Product(-1, "").__dict__)[:]
 
     def __str__(self):
-        return f'PRODUCT {self.product_id}\n\t{self.asin}\n\t\t{self.title}\n\t\t{self.product_group}\n\t\t{self.salesrank}\n'
+        list_str = [f'{self.__class__.__name__}']
+        for attr in self.attr_list():
+            list_str.append(f'{attr}: {getattr(self, attr)}')
+        return '\n'.join(list_str)
 
 
 class SimilarProducts(ModelEntity):
@@ -62,17 +61,20 @@ class SimilarProducts(ModelEntity):
         self.similar_asin = similar_asin
 
     def to_tuple(self):
-        return (
-            self.product_asin,
-            self.similar_asin
-        )
+        values = []
+        for attr in self.attr_list():
+            values.append(getattr(self, attr))
+        return tuple(values)
 
     @staticmethod
     def attr_list():
         return list(SimilarProducts("", "").__dict__)[:]
 
     def __str__(self):
-        return f'PRODUCT SIMILAR \n\t{self.product_asin} -> {self.similar_asin}\n'
+        list_str = [f'{self.__class__.__name__}']
+        for attr in self.attr_list():
+            list_str.append(f'{attr}: {getattr(self, attr)}')
+        return '\n'.join(list_str)
 
 
 class Category(ModelEntity):
@@ -84,18 +86,20 @@ class Category(ModelEntity):
         self.parent_id = parent_id
 
     def to_tuple(self):
-        return (
-            self.category_id,
-            self.name,
-            self.parent_id
-        )
+        values = []
+        for attr in self.attr_list():
+            values.append(getattr(self, attr))
+        return tuple(values)
 
     @staticmethod
     def attr_list():
-        return list(Category(0, "").__dict__)[:]
+        return list(Category(-1, "").__dict__)[:]
 
     def __str__(self):
-        return f'CATEGORY {self.category_id}\n\t{self.name}\n\t{self.parent_id}\n'
+        list_str = [f'{self.__class__.__name__}']
+        for attr in self.attr_list():
+            list_str.append(f'{attr}: {getattr(self, attr)}')
+        return '\n'.join(list_str)
 
 
 class ProductCategory(ModelEntity):
@@ -106,17 +110,20 @@ class ProductCategory(ModelEntity):
         self.category_id = category_id
 
     def to_tuple(self):
-        return (
-            self.product_id,
-            self.category_id
-        )
+        values = []
+        for attr in self.attr_list():
+            values.append(getattr(self, attr))
+        return tuple(values)
 
     @staticmethod
     def attr_list():
         return list(ProductCategory(-1, -1).__dict__)[:]
 
     def __str__(self):
-        return f'PRODUCT-CATEGORY {self.product_id} -> {self.category_id}\n'
+        list_str = [f'{self.__class__.__name__}']
+        for attr in self.attr_list():
+            list_str.append(f'{attr}: {getattr(self, attr)}')
+        return '\n'.join(list_str)
 
 
 class Review(ModelEntity):
@@ -129,20 +136,21 @@ class Review(ModelEntity):
         self.rating = None
         self.votes = None
         self.helpful = None
+        # for name in ['rating', 'votes', 'helpful']:
+        #     setattr(self, name, None)
 
     def to_tuple(self):
-        return (
-            self.product_id,
-            self.customer_id,
-            self.review_date,
-            self.rating,
-            self.votes,
-            self.helpful
-        )
+        values = []
+        for attr in self.attr_list():
+            values.append(getattr(self, attr))
+        return tuple(values)
 
     @staticmethod
     def attr_list():
-        return list(Review(0, "", "").__dict__)[:]
+        return list(Review(-1, "", "").__dict__)[:]
 
     def __str__(self):
-        return f'ANALISE {self.review_date}\n\t{self.product_id}\n\t{self.customer_id}\n\t\t{self.rating} {self.votes} {self.helpful}\n'
+        list_str = [f'{self.__class__.__name__}']
+        for attr in self.attr_list():
+            list_str.append(f'{attr}: {getattr(self, attr)}')
+        return '\n'.join(list_str)
