@@ -15,7 +15,7 @@ AMAZON_DATASET_FILEPATH = 'amazon-meta.txt'
 
 if __name__ == '__main__':
     start_time = datetime.now()
-    DatabaseManager.create_tables(DatabaseManager.POSTGRESQL_DB)
+    DatabaseManager.create_database(DatabaseManager.POSTGRESQL_DB)
     products, categories, prod_cats, similars, reviews = AmazonDatasetController().extrair(AMAZON_DATASET_FILEPATH)
 
     ProductController.insert_batch(products)
