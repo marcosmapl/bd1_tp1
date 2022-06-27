@@ -45,7 +45,15 @@ class DatabaseManager:
             DatabaseManager.__connection.close()
 
     @classmethod
-    def create_tables(cls, sgbd_name: str):
+    def create_database(cls, sgbd_name: str):
+        conn = psycopg2.connect(
+            database="postgres", user='postgres', password='12345678', host='127.0.0.1', port='5432'
+        )
+        conn.autocommit = True
+        cursor = conn.cursor()
+        cursor.execute(f"CREATE DATABASE {sgbd_name}")
+        conn.close()
+
         with open('db_create.sql', 'r') as db_file:
             sql = ''.join(db_file.readlines())
             conn = DatabaseManager.get_connection(sgbd_name)
