@@ -7,8 +7,8 @@
 CREATE TABLE product (
 	product_id int NOT NULL,
 	asin varchar(10) NOT NULL UNIQUE,
-	title varchar(500),
-	product_group varchar(50),
+	title varchar(460),
+	product_group varchar(13),
 	salesrank int,
 	review_total int DEFAULT 0,
 	review_downloaded int DEFAULT 0,
@@ -26,7 +26,7 @@ CREATE TABLE similar_products (
 
 CREATE TABLE category (
 	category_id int NOT NULL,
-	name varchar(200),
+	name varchar(60),
 	parent_id int,
 	PRIMARY KEY (category_id),
 	FOREIGN KEY (parent_id) REFERENCES category(category_id)
