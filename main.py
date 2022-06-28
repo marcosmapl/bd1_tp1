@@ -28,9 +28,5 @@ if __name__ == '__main__':
     print(f'{len(similars)} SIMILARS PRODUCTS INSERTED INTO DATABASE')
     ReviewController.insert_batch(reviews)
     print(f'{len(reviews)} PRODUCT REVIEWS INSERTED INTO DATABASE')
-    # for item in items:
-    #     produto = item[0]
-    #     print(produto)
-    #     rows = ProductController.insert_one(produto)
     DatabaseManager.close_connection()
     print(f'TIME ELAPSED: {datetime.now() - start_time}')
