@@ -10,6 +10,17 @@
 from database import DatabaseManager
 
 
+def print_table_data(header, cols_size, data):
+    for c, l in zip(header, cols_size):
+        print(f'{c.ljust(l)}', end='')
+    print('')
+    for row in data:
+        for c, l in zip(row, cols_size):
+            print(f'{str(c).ljust(l)}', end='')
+        print('')
+    print('')
+
+
 def listar_5():
     print('INFORME O ID DO PRODUTO:')
     id = input()
@@ -63,15 +74,15 @@ def listar_mvendidos():
     print_table_data(['TITULO', 'RANK VENDAS', 'GRUPO'], [150, 15, 13], rows)
 
 
-def print_table_data(header, cols_size, data):
-    for c, l in zip(header, cols_size):
-        print(f'{c.ljust(l)}', end='')
-    print('')
-    for row in data:
-        for c, l in zip(row, cols_size):
-            print(f'{str(c).ljust(l)}', end='')
-        print('')
-    print('')
+def listar_comentarios():
+    print('\t\t\t\tCLIENTES COM MAIS COMENTÁRIOS POR GRUPO DE PRODUTO')
+    conn = DatabaseManager.get_connection(DatabaseManager.POSTGRESQL_DB)
+    cursor = conn.cursor()
+    cursor.execute(
+        f'SELECT customer_id, n_reviews, review_rank, product_group FROM (SELECT customer_id, n_reviews, product_group, ROW_NUMBER() OVER (PARTITION BY t1.product_group ORDER BY t1.n_reviews DESC) AS review_rank FROM (SELECT customer_id, count(customer_id) AS n_reviews, product_group FROM product INNER JOIN review ON product.product_id=review.product_id GROUP BY (product_group, customer_id)) AS t1 ORDER BY t1.product_group ASC, t1.n_reviews DESC) AS t2 WHERE review_rank <= 10'
+    )
+    rows = cursor.fetchall()
+    print_table_data(['ID CLIENTE', 'N COMENTARIOS', 'RANK', 'GRUPO'], [16, 10, 5, 15], rows)
 
 
 if __name__ == '__main__':
@@ -82,7 +93,7 @@ if __name__ == '__main__':
         print('[2] - LISTAR OS PRODUTOS SIMILARES COM MAIORES VENDAS')
         print('[3] - MOSTRAR EVOLUÇÃO DIÁRIA DAS AVALIAÇÕES')
         print('[4] - LISTAR OS 10 MAIS VENDIDOS EM CADA GRUPO DE PRODUTOS')
-        print('[5] - LISTAR OS 5 COMENTÁRIOS MAIS ÚTEIS E COM MAIOR AVALIAÇÃO E OS 5 COMENTÁRIOS MAIS ÚTEIS E COM MENOR AVALIAÇÃO')
+        print('[5] - LISTAR OS 10 CLIENTES QUE MAIS FIZERAM COMENTÁRIOS POR GRUPO DE PRODUTO')
         print('[0] - SAIR')
         op = int(input().strip())
         if op == 1:
@@ -93,3 +104,5 @@ if __name__ == '__main__':
             listar_evolucao()
         elif op == 4:
             listar_mvendidos()
+        elif op == 5:
+            listar_comentarios()
