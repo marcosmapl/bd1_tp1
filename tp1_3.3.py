@@ -85,6 +85,28 @@ def listar_comentarios():
     print_table_data(['ID CLIENTE', 'N COMENTARIOS', 'RANK', 'GRUPO'], [16, 10, 5, 15], rows)
 
 
+def listar_avaliacoes_produtos():
+    print('\t\t\t\tPRODUTOS COM MAIOR MÉDIA DE AVALIAÇÕES ÚTEIS POSITIVAS POR PRODUTO   ')
+    conn = DatabaseManager.get_connection(DatabaseManager.POSTGRESQL_DB)
+    cursor = conn.cursor()
+    cursor.execute(
+        f'SELECT t2.product_id, t2.title, t2.product_group, t2.avg_helpful, t2.n_rank FROM (SELECT product.product_id, product.title, product.product_group, t1.avg_helpful, ROW_NUMBER() OVER (PARTITION BY product.product_group ORDER BY t1.avg_helpful DESC) AS n_rank FROM product JOIN (SELECT review.product_id, round(avg(review.helpful), 2) AS avg_helpful FROM review WHERE review.helpful > 0 GROUP BY review.product_id) t1 ON t1.product_id=product.product_id) as t2 WHERE n_rank <= 10'
+    )
+    rows = cursor.fetchall()
+    print_table_data(['ID PRODUTO', 'TITULO', 'GRUPO', 'MEDIA AV', 'RANK'], [12, 150, 15, 12, 5], rows)
+
+
+def listar_avaliacoes_categorias():
+    print('\t\t\t\tCATEGORIAS COM MAIOR MÉDIA DE AVALIAÇÕES ÚTEIS POSITIVAS POR PRODUTO   ')
+    conn = DatabaseManager.get_connection(DatabaseManager.POSTGRESQL_DB)
+    cursor = conn.cursor()
+    cursor.execute(
+        f'select category.name, round(t_avg.avg, 2) from category inner join (select product_category.category_id, avg(qtd_pos.count) from product_category inner join (select review.product_id, count(*) from review where review.helpful > 0 group by review.product_id) qtd_pos on qtd_pos.product_id = 	product_category.product_id group by product_category.category_id having  avg(qtd_pos.count) > 0 order by avg desc limit 5) t_avg on category.category_id  =  t_avg.category_id;'
+    )
+    rows = cursor.fetchall()
+    print_table_data(['NOME CATEGORIA', 'MEDIA AV'], [50, 12], rows)
+
+
 if __name__ == '__main__':
     op = 99
     while op:
@@ -93,7 +115,9 @@ if __name__ == '__main__':
         print('[2] - LISTAR OS PRODUTOS SIMILARES COM MAIORES VENDAS')
         print('[3] - MOSTRAR EVOLUÇÃO DIÁRIA DAS AVALIAÇÕES')
         print('[4] - LISTAR OS 10 MAIS VENDIDOS EM CADA GRUPO DE PRODUTOS')
-        print('[5] - LISTAR OS 10 CLIENTES QUE MAIS FIZERAM COMENTÁRIOS POR GRUPO DE PRODUTO')
+        print('[5] - LISTAR OS 10 PRODUTOS COM A MAIOR MÉDIA DE AVALIAÇÕES ÚTEIS POSITIVAS POR PRODUTO')
+        print('[6] - LISTAR OS 10 PRODUTOS COM A MAIOR MÉDIA DE AVALIAÇÕES ÚTEIS POSITIVAS POR PRODUTO')
+        print('[7] - LISTAR OS 10 CLIENTES QUE MAIS FIZERAM COMENTÁRIOS POR GRUPO DE PRODUTO')
         print('[0] - SAIR')
         op = int(input().strip())
         if op == 1:
@@ -105,4 +129,8 @@ if __name__ == '__main__':
         elif op == 4:
             listar_mvendidos()
         elif op == 5:
+            listar_avaliacoes_produtos()
+        elif op == 6:
+            listar_avaliacoes_categorias()
+        elif op == 7:
             listar_comentarios()
