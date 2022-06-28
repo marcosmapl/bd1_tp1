@@ -3,9 +3,9 @@
 # INSTITUTO DE COMPUTAÇÃO
 # BANCO DE DADOS I - 2020/02 (2021)
 # PROFESSOR: ALTIGRAN SOARES DA SILVA
+# ALUNOS: MARCOS AVNER PIMENTA DE LIMA
 # ALUNOS: DANIEL
 # ALUNOS: JELIEL
-# ALUNOS: MARCOS AVNER PIMENTA DE LIMA
 # TRABALHO PRÁTICO I
 from controller import AmazonDatasetController, ProductController, CategoryController, ProductCategoryController, SimilarProductsController, ReviewController
 from database import DatabaseManager
