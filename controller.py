@@ -7,11 +7,10 @@
 # ALUNOS: JELIEL
 # ALUNOS: MARCOS AVNER PIMENTA DE LIMA
 # TRABALHO PRÁTICO I
+import re
 from typing import List
 
-import psycopg2
 from psycopg2 import extras
-import re
 
 from database import DatabaseManager
 from model import Product, SimilarProducts, Category, Review, ProductCategory
