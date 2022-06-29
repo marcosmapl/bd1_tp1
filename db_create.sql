@@ -1,9 +1,4 @@
--- CREATE DATABASE amazon
---     WITH
---     OWNER = postgres
---     ENCODING = 'UTF8'
---     CONNECTION LIMIT = -1;
-
+-- ARQUIVO COM OS COMANDOS SQL PARA A CRIAÇÃO DAS TABELAS NO SGBD
 CREATE TABLE product (
 	product_id int NOT NULL,
 	asin varchar(10) NOT NULL UNIQUE,
