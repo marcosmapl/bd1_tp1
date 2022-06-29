@@ -17,6 +17,9 @@ from model import Product, SimilarProducts, Category, Review, ProductCategory
 
 
 class AmazonDatasetController:
+    """ Classe reponsável pela anaálise e extração dos dados diretamente do arquivo dataset. """
+
+
     __categoria_regex = re.compile(r'(.*)\[(\d+)\]')
     __review_regex = re.compile(r'\s{2}reviews:\stotal:\s(\d+)\s{2}downloaded:\s(\d+)\s{2}avg\srating:\s(\d+)')
     __analise_regex = re.compile(r'\s{4}(\d{4}-\d{1,2}-\d{1,2})\s{2}cutomer:\s+([A-Z0-9]+)\s{2}rating:\s+(\d+)\s{2}votes:\s+(\d+)\s{2}helpful:\s+(\d+)')
