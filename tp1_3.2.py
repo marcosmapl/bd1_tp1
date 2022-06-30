@@ -11,12 +11,11 @@ from controller import AmazonDatasetController, ProductController, CategoryContr
 from database import DatabaseManager
 from datetime import datetime
 
-AMAZON_DATASET_FILEPATH = 'amazon-meta.txt'
-
 if __name__ == '__main__':
     start_time = datetime.now()
     DatabaseManager.create_database(DatabaseManager.POSTGRESQL_DB)
-    products, categories, prod_cats, similars, reviews = AmazonDatasetController().extrair(AMAZON_DATASET_FILEPATH)
+    dataset_path = input('INFORME O LOCAL DO ARQUIVO DE METADADOS: ')
+    products, categories, prod_cats, similars, reviews = AmazonDatasetController().extrair(dataset_path)
 
     ProductController.insert_batch(products)
     print(f'{len(products)} PRODUCTS INSERTED INTO DATABASE')
