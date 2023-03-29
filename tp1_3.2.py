@@ -13,7 +13,7 @@ from datetime import datetime
 
 if __name__ == '__main__':
     start_time = datetime.now()
-    DatabaseManager.create_database(DatabaseManager.POSTGRESQL_DB)
+    DatabaseManager.create_database(DatabaseManager.DATABASE_NAME)
     dataset_path = input('INFORME O LOCAL DO ARQUIVO DE METADADOS: ')
     products, categories, prod_cats, similars, reviews = AmazonDatasetController().extrair(dataset_path)
 
